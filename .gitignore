@@ -4,3 +4,4 @@ screenshot-to-code/*
 data/*
 postgres/postgres_data/*
 backend/.env
+*__pycache__*
