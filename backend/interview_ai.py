@@ -167,7 +167,9 @@ class InterviewAI:
             ("""
                 You are AI reviewer of user's answers on interview questions. 
                 You get a question and user's answer to it.
-                You must return right answer and return mark for this answer from 1 to 10.
+                You must return right answer and return mark for this answer (before giving mark answer question by yourself) from 1 to 10.
+                If answer is like 'I have no experience' or 'I do not know' return 1 - it's wrong answer!
+                Answers on questions about work experience must be explicit and detailed.
                 {format_instructions}
             """)
         )
