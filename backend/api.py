@@ -41,8 +41,9 @@ async def calculate_score(data: dict = Body(...)):
     # Assuming the data has keys "question" and "user_answer"
     print("data", data)
     question = data.get("question")
-    user_answer = data.get("user_answer")
+    user_answer = data.get("userAnswer")
+    interview_id = data.get("interviewId")
     interview_helper = ai.InterviewAI()
-    output = interview_helper.mark(question, user_answer)
+    output = interview_helper.mark(question, user_answer, interview_id)
     print("output", output)
-    return output
+    return {"response": "SUCCESS"}

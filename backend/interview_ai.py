@@ -33,6 +33,7 @@ class InterviewAI:
         return hash_object.hexdigest()
 
     def _parse_json(self, output, key="skills"):
+        print("output",output)
         parsed_output = output.replace ("`",'').replace ("\n",'').replace ("\t",'')
 
         json_start = parsed_output.find('{')
@@ -87,7 +88,7 @@ class InterviewAI:
             ).to_messages()
         )
 
-        parsed_output = self._parse_json(output, "skills")
+        parsed_output = self._parse_json(output.content, "skills")
         return parsed_output
 
     def generate_questions(self, skill):
@@ -132,11 +133,29 @@ class InterviewAI:
         parsed_output = self._parse_json(output.content, "questions")
         return parsed_output
 
+    def update_interview_id(self, interview_id, question, correct_answer, user_answer, score):
+        # updates InterviewQuestions table with an user answer and score
+        # by interview_id and question
+        print("interview_id",interview_id)
+        print("question",question)
+        print("correct_answer",correct_answer)
+        print("user_answer",user_answer)
+        print("score",score)
+        
+        cur = self.conn.cursor()
+        cur.execute("""UPDATE public.InterviewQuestions
+            SET user_answer = %s, score = %s, correct_answer = %s
+            WHERE interview_id = %s AND question = %s
+        """, (user_answer, score, correct_answer, interview_id, question))
+        print("sql=",cur.query)
+        self.conn.commit()
+        cur.close()
+
     def save_questions_to_db(self, interview_id, questions):
         cur = self.conn.cursor()
         for question in questions:
             cur.execute("""
-                INSERT INTO public."InterviewQuestions" (interview_id, question) 
+                INSERT INTO public.InterviewQuestions (interview_id, question) 
                 VALUES (%s, %s)""", (interview_id, question)
             )
             print("question",question)
@@ -146,7 +165,7 @@ class InterviewAI:
     def check_interview_id(self, interview_id):
         cur = self.conn.cursor()
         cur.execute("""
-            SELECT interview_id, question FROM public."InterviewQuestions"
+            SELECT interview_id, question FROM public.InterviewQuestions
             WHERE interview_id = %s
             LIMIT 10
         """, (interview_id,))
@@ -156,7 +175,7 @@ class InterviewAI:
             return result
         return [{"id": str(q_id), "title": result[1]} for q_id, result in enumerate(result)]
 
-    def mark(self, question, user_answer):
+    def mark(self, question, user_answer, interview_id):
         response_schemas = [
             ResponseSchema(name="answer_mark", description="python list with 2 elements - right answer for the question and mark (from 1 to 10) for user answer")
         ]
@@ -189,6 +208,9 @@ class InterviewAI:
             ).to_messages()
         )
         parsed_output = self._parse_json(output.content, "answer_mark")
+        print("parsed_output",parsed_output)
+        answer, score = parsed_output
+        self.update_interview_id(interview_id, question, answer, user_answer, score)
         return parsed_output
 
     def run(self, input_str):

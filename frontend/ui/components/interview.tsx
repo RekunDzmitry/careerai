@@ -1,5 +1,7 @@
 'use client'
 
+import axios from "axios";
+
 import { useState, FormEvent } from 'react';
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs"
 import { CardTitle, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
@@ -12,13 +14,15 @@ interface Question {
   id: string;
   title: string;
   answered: boolean;
+  interviewId: string;
 }
 
 interface InterviewProps {
+  interviewId: string;
   questions: Question[];
 }
 
-export function Interview({ questions }: InterviewProps) {
+export function Interview({ interviewId, questions }: InterviewProps) {
   const initialActiveQuestion = questions.length > 0 ? questions[0].id : null;
   const [activeQuestion, setActiveQuestion] = useState<string | null>(initialActiveQuestion);
   const [questionsCompleted, setQuestionsCompleted] = useState<number>(0);
@@ -32,12 +36,45 @@ export function Interview({ questions }: InterviewProps) {
     setActiveQuestion(value);
   };
 
-  const handleQuestionSubmit = (questionId: string) => {
+  const handleQuestionSubmit = async (question: Question) => {
     // Find the question by id and mark it as answered
-    setQuestionStatus(prevStatus => ({ ...prevStatus, [questionId]: true }));
+    setQuestionStatus(prevStatus => ({ ...prevStatus, [question.id]: true }));
 
     // Update the state with the modified questions and increment Questions Completed
     setQuestionsCompleted(questionsCompleted + 1);
+
+    const userAnswer = (document.getElementById(`answer${question.id}`) as HTMLTextAreaElement)?.value;
+
+    if (!userAnswer || userAnswer.trim() === "") {
+      // Check if the user's answer is empty
+      alert("Please provide an answer before submitting.");
+      return;
+    }
+
+    const requestData = {
+      question: question.title,
+      userAnswer: userAnswer,
+      interviewId: interviewId
+    };
+
+    try {
+      const response = await axios.post("http://localhost:3003/calculate", requestData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      // Handle the response if needed
+      if (!response.status === 200) {
+        // Handle non-successful responses (e.g., show an error message)
+        console.error("Failed to submit answer. Status:", response.status);
+        // You can add more error handling here if necessary
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("Error submitting answer:", error.message);
+      // You can add more error handling here if necessary
+    }
   };
 
   if (!initialActiveQuestion) {
@@ -70,7 +107,7 @@ export function Interview({ questions }: InterviewProps) {
                   <Button className={`w-full ${isQuestionAnswered(question.id) ? 'bg-gray-500 cursor-not-allowed' : ''}`}
                 onClick={() => {
                   if (!isQuestionAnswered(question.id)) {
-                    handleQuestionSubmit(question.id);
+                    handleQuestionSubmit(question);
                   }
                 }}
                 disabled={isQuestionAnswered(question.id)}>Submit</Button>

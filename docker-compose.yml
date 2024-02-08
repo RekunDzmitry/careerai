@@ -5,12 +5,12 @@ networks:
     driver: bridge
 
 services:
-  app:
+  frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
     volumes:
-      - ./ui:/ui
+      - ./frontend/ui:/ui
     ports:
       - "3001:3001"
     networks:

@@ -5,6 +5,7 @@ RUN apk add --no-cache python3
 RUN mkdir -p /ui
 COPY ./ui /ui
 COPY ./bin /bin
+RUN ls -la /ui
 
 EXPOSE 3001
 ENV NODE_OPTIONS=--max-old-space-size=16384

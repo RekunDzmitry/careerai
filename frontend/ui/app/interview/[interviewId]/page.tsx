@@ -25,7 +25,6 @@ export default function Page({ params }: { params: { interviewId: string } }) {
   }
 
   const [questions, setQuestions] = useState<Array<any>>([]);
-  console.log("questions", questions);
 
   useEffect(() => {
     // Use an IIFE to call the async function and update state
@@ -40,6 +39,6 @@ export default function Page({ params }: { params: { interviewId: string } }) {
   }, [params.interviewId]);
 
   return <div>
-    <Interview questions={questions} />
+    <Interview interviewId={params.interviewId} questions={questions} />
   </div>
 }
