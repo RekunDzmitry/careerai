@@ -2,6 +2,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const router = useRouter();
@@ -40,6 +41,9 @@ export default function Home() {
 
   return (
     <main className="flex items-center justify-center h-screen">
+      <div className="h-screen">
+        <UserButton />
+      </div>
       <div className="container mx-auto px-4 py-8">
         <div className="w-full max-w-2xl mx-auto">
           <h1 className="text-2xl font-semibold mb-6">

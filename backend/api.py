@@ -47,3 +47,10 @@ async def calculate_score(data: dict = Body(...)):
     output = interview_helper.mark(question, user_answer, interview_id)
     print("output", output)
     return {"response": "SUCCESS"}
+
+@app.get("/report")
+async def get_interview(interviewId: str = Query(..., description="The interview ID")):
+    interview_helper = ai.InterviewAI()
+    output = interview_helper.generate_report(interviewId)
+    print("output", output)
+    return output

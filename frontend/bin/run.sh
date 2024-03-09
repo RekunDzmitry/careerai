@@ -30,5 +30,6 @@ fi
 npx shadcn-ui@latest add sheet -y
 npx shadcn-ui@latest add button -y
 npx shadcn-ui@latest add label -y
+npm install @clerk/nextjs
 
 npm run dev

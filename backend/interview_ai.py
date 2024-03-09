@@ -3,6 +3,8 @@ import hashlib
 import uuid
 import psycopg2
 
+from collections import defaultdict
+
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
@@ -153,12 +155,12 @@ class InterviewAI:
 
     def save_questions_to_db(self, interview_id, questions):
         cur = self.conn.cursor()
-        for question in questions:
-            cur.execute("""
-                INSERT INTO public.InterviewQuestions (interview_id, question) 
-                VALUES (%s, %s)""", (interview_id, question)
-            )
-            print("question",question)
+        for skill, questions in questions.items():
+            for question in questions:
+                cur.execute("""
+                    INSERT INTO public.InterviewQuestions (interview_id, skill, question) 
+                    VALUES (%s, %s, %s)""", (interview_id, skill, question)
+                )
         self.conn.commit()
         cur.close()
     
@@ -215,8 +217,20 @@ class InterviewAI:
         self.update_interview_id(interview_id, question, answer, user_answer, score)
         return parsed_output
 
+    def generate_report(self, interview_id):
+        cur = self.conn.cursor()
+        cur.execute("""
+            SELECT skill, avg(score)
+            FROM public.InterviewQuestions
+            WHERE interview_id = %s and score is not null
+            group by skill
+        """, (interview_id,))
+        result = cur.fetchall()
+        cur.close()
+        return result
+    
     def run(self, input_str):
-        final_questions = []
+        final_questions = defaultdict(list)
         interview_id = self.hash_request(input_str)
         cached_data = self.check_interview_id(interview_id)
         if cached_data:
@@ -228,17 +242,10 @@ class InterviewAI:
             if not skill:
                 return None
             questions = self.generate_questions(skill)
+            
             print("generated questions",questions)
-            final_questions.extend(questions)
-        print("final_questions",questions)
+            final_questions[skill].extend(questions)
+        print("final_questions",final_questions)
         self.save_questions_to_db(interview_id, final_questions)
         return interview_id
 
-
-if __name__ == "__main__":
-    interview_helper = InterviewAI()
-    output = interview_helper.mark(
-        "What is ETL and how does it work?",
-        "I don't know"
-    )
-    print("output",output)

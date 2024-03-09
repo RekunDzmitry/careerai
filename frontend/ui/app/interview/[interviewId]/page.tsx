@@ -9,7 +9,6 @@ export default function Page({ params }: { params: { interviewId: string } }) {
   console.log("params", params)
 
   const fetchInterviewData = async (interviewId: string) => {
-    console.log("interviewId", interviewId, `http://localhost:3003/interview?interviewId=${interviewId}`)
     try {
       const response = await axios.get(`http://localhost:3003/interview`, {
         params: {
@@ -27,7 +26,6 @@ export default function Page({ params }: { params: { interviewId: string } }) {
   const [questions, setQuestions] = useState<Array<any>>([]);
 
   useEffect(() => {
-    // Use an IIFE to call the async function and update state
     (async () => {
       try {
         const fetchedQuestions = await fetchInterviewData(params.interviewId);
