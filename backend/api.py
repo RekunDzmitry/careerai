@@ -54,3 +54,13 @@ async def get_interview(interviewId: str = Query(..., description="The interview
     output = interview_helper.generate_report(interviewId)
     print("output", output)
     return output
+
+
+
+@app.get("/recomendation")
+async def get_recomendation(skill: str = Query(..., description="The interview ID")):
+    print (skill)
+    interview_helper = ai.InterviewAI()
+    output = interview_helper.recomendation(skill)
+    print("output", output)
+    return output

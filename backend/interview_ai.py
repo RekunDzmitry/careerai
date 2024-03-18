@@ -229,6 +229,52 @@ class InterviewAI:
         cur.close()
         return result
     
+    def recomendation (self, skill):
+        print (skill)
+        response_schemas = [
+            ResponseSchema(name="recomendations"
+                           , description="python list with sources of information and their description - to improve given skill")
+        ]
+        output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
+
+        format_instructions = output_parser.get_format_instructions()
+        system_prompt = SystemMessagePromptTemplate.from_template(
+            ("""
+                You are AI teacher - you give recomendations how to improve knowledges. 
+                You get a skill to improve.
+                You must return list of sources with description. 
+                Sources must be - books or sites, if possible both books and sites.
+                Description must not be long - 2 or 3 sentences.
+                Return 4-5 sources.
+                {format_instructions}
+            """)
+        )
+        print (format_instructions)
+
+        human_prompt = HumanMessagePromptTemplate.from_template(
+            ("""
+                SKILL: 
+            {skill}
+            """)
+        )
+        print (human_prompt)
+
+        chat_prompt = ChatPromptTemplate.from_messages(
+            [system_prompt, human_prompt]
+        )
+        print (chat_prompt)
+
+        output = self.model(
+            chat_prompt.format_prompt(
+                skill=skill, format_instructions=format_instructions
+            ).to_messages()
+        )
+        print (output)
+
+        parsed_output = self._parse_json(output.content, "recomendations")
+        print (parsed_output)
+        return parsed_output
+    
     def run(self, input_str):
         final_questions = defaultdict(list)
         interview_id = self.hash_request(input_str)
