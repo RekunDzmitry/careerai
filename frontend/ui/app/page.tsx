@@ -1,50 +1,90 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+"use client";
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Component() {
+  const [showImage, setShowImage] = useState(false);
+  const [showText, setShowText] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowImage(true);
+    }, 500);
+    setTimeout(() => {
+      setShowText(true);
+    }, 1000);
+  }, []);
+
   return (
-    <div key="1" className="flex flex-col min-h-screen">
+    <div key="1" className="flex flex-col min-h-screen relative">
       <header className="flex items-center justify-between p-4 border-b border-gray-200 sm:p-6 dark:border-gray-800">
         <div className="flex items-center space-x-4">
-          <Button size="icon" variant="ghost">
-            <FlagIcon className="h-6 w-6" />
-            <span className="sr-only">Home</span>
-          </Button>
           <nav className="hidden space-x-4 text-sm font-medium lg:flex">
-            <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="#">
+            <Link
+              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+              href="/"
+            >
               Home
             </Link>
-            <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="#">
-              Features
-            </Link>
-            <Link className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50" href="#">
+            <Link
+              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+              href="/pricing"
+            >
               Pricing
             </Link>
           </nav>
         </div>
-        <div className="hidden space-x-4 text-sm lg:flex">
-          <Link className="text-gray-500 hover:underline dark:text-gray-400 dark:hover:underline" href="#">
+        <div className="space-x-4 text-sm lg:flex">
+          <Link
+            href="/sign-in"
+            className="text-gray-500 hover:underline dark:text-gray-400 dark:hover:underline"
+          >
             Sign In
           </Link>
-          <Link className="text-gray-500 hover:underline dark:text-gray-400 dark:hover:underline" href="#">
+          <Link
+            href="/sign-up"
+            className="text-gray-500 hover:underline dark:text-gray-400 dark:hover:underline"
+          >
             Sign Up
           </Link>
-          <Button className="lg:hidden" size="icon" variant="outline">
-            <ChevronDownIcon className="w-4 h-4 rotate-90" />
-            <span className="sr-only">Open menu</span>
-          </Button>
+          <Link
+            href="/pricing"
+            className="text-gray-500 hover:underline dark:text-gray-400 dark:hover:underline"
+          >
+            Pricing
+          </Link>
         </div>
       </header>
       <main className="flex-1 flex flex-col items-center justify-center py-6">
         <div className="container flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tighter lg:text-6xl xl:text-7xl/relaxed">
-              Interview like a pro.
-            </h1>
-            <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-              The platform for rapid progress. Let your team focus on shipping features instead of managing
-              infrastructure with automated CI/CD, built-in testing, and integrated collaboration.
-            </p>
+            {showImage && (
+              <Image
+                src="/interview.jpg"
+                alt="Interview image"
+                className={`absolute top-0 left-0 w-full h-full object-cover ${
+                  showImage ? "animate-slide-in" : ""
+                }`}
+                width={1920}
+                height={1080}
+                priority
+              />
+            )}
+            {showText && (
+              <div
+                className={`absolute top-1/3 left-2/3 transform translate-x-1/2 text-4xl font-bold tracking-tighter ${
+                  showText ? "animate-slide-in-right" : ""
+                }`}
+              >
+                <h1>Interview like a pro.</h1>
+                <p className="max-w-[600px] text-black-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-black-400">
+                  Unlock your career potential with our AI-powered interview
+                  prep startup.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </main>
@@ -53,31 +93,29 @@ export default function Component() {
           <Link className="font-bold text-gray-900 dark:text-gray-50" href="#">
             Terms and Conditions
           </Link>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Read our terms and conditions</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Read our terms and conditions
+          </p>
         </div>
         <div className="space-y-2">
           <Link className="font-bold text-gray-900 dark:text-gray-50" href="#">
             FAQ
           </Link>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Have any questions? Find answers here</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Have any questions? Find answers here
+          </p>
         </div>
         <div className="space-y-2">
           <Link className="font-bold text-gray-900 dark:text-gray-50" href="#">
             Privacy Policy
           </Link>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Review our privacy policy</p>
-        </div>
-        <div className="flex justify-center space-x-4 lg:justify-end lg:space-x-0">
-          <Button size="sm" variant="outline">
-            Light
-          </Button>
-          <Button size="sm" variant="outline">
-            Dark
-          </Button>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Review our privacy policy
+          </p>
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
 function ChevronDownIcon(props) {
@@ -96,26 +134,5 @@ function ChevronDownIcon(props) {
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
-  )
-}
-
-
-function FlagIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
-      <line x1="4" x2="4" y1="22" y2="15" />
-    </svg>
-  )
+  );
 }
