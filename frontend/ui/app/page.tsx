@@ -59,7 +59,8 @@ export default function Component() {
       </header>
       <main className="flex-1 flex flex-col items-center justify-center py-6">
         <div className="container flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
+          <div className="space-y-2"
+               style={{ zIndex: -1 }}>
             {showImage && (
               <Image
                 src="/interview.jpg"
