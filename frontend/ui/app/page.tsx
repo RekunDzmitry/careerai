@@ -49,46 +49,41 @@ export default function Component() {
           >
             Sign Up
           </Link>
-          <Link
-            href="/pricing"
-            className="text-gray-500 hover:underline dark:text-gray-400 dark:hover:underline"
-          >
-            Pricing
-          </Link>
         </div>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-center py-6">
-        <div className="container flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2"
-               style={{ zIndex: -1 }}>
-            {showImage && (
-              <Image
-                src="/interview.jpg"
-                alt="Interview image"
-                className={`absolute top-0 left-0 w-full h-full object-cover ${
-                  showImage ? "animate-slide-in" : ""
+      <div className="flex-1 flex flex-col items-center justify-center py-6" style={{ backgroundImage: `url('/interview.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', position: 'relative', height: '100vh' }}>
+      <div className="absolute inset-0 bg-black opacity-60"></div>
+    <div className="container flex flex-col items-center justify-center space-y-4 text-center" style={{ position: 'relative', width: '100%', height: '100%' }}>
+        {showText && (
+            <div
+                className={`flex flex-col items-center justify-center absolute inset-0 ${
+                    showText ? "animate-slide-in-right" : ""
                 }`}
-                width={1920}
-                height={1080}
-                priority
-              />
-            )}
-            {showText && (
-              <div
-                className={`absolute top-1/3 left-2/3 transform translate-x-1/2 text-4xl font-bold tracking-tighter ${
-                  showText ? "animate-slide-in-right" : ""
-                }`}
-              >
+                style={{ fontSize: 'clamp(1rem, 2vw, 2rem)', color: 'white' }}
+            >
                 <h1>Interview like a pro.</h1>
                 <p className="max-w-[600px] text-black-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-black-400">
-                  Unlock your career potential with our AI-powered interview
-                  prep startup.
+                    Unlock your career potential with our AI-powered interview
+                    prep startup.
                 </p>
-              </div>
-            )}
-          </div>
+            </div>
+        )}
+    </div>
+</div>
+      
+      <main>
+        <div>
+        <p className="max-w-[600px] text-black-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-black-400">
+                  lorem ipsum
+                  <br></br>
+                  <br></br>
+                  <br></br>
+                  <br></br>
+
+                </p>
         </div>
       </main>
+
       <footer className="grid gap-4 p-4 border-t border-gray-200 items-center justify-center sm:p-6 md:grid-cols-2 lg:grid-cols-4 dark:border-gray-800">
         <div className="space-y-2">
           <Link className="font-bold text-gray-900 dark:text-gray-50" href="#">
