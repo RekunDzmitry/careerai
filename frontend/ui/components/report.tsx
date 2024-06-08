@@ -26,6 +26,7 @@ export function Report({ data }: ReportProps) {
         .catch(error => console.error('Error fetching recommendations:', error));
     }
   }, [data]);
+
   return (
     <Card className="w-full max-w-3xl">
       <CardHeader className="pb-0">
