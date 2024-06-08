@@ -78,12 +78,14 @@ export function Report({ data }: ReportProps) {
           <p className="text-sm leading-loose">
             To support the interviewee's professional development, the following roadmap for growth is recommended:
           </p>
-          {Object.entries(recommendations).map(([skill, recommendation], index) => (
+          {Object.entries(recommendations).map(([skill, recs], index) => (
             <div key={index} className="space-y-2">
               <h3 className="font-semibold">{skill}</h3>
               <ul className="list-disc list-inside text-sm grid gap-2">
-                {recommendation.split('\n').map((rec, i) => (
-                  <li key={i}>{rec}</li>
+                {recs.map((rec, i) => (
+                  <li key={i}>
+                    <strong>{rec.title}</strong>: {rec.description}
+                  </li>
                 ))}
               </ul>
             </div>
