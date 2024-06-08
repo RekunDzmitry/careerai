@@ -12,7 +12,7 @@ interface ReportProps {
 }
 
 export function Report({ data }: ReportProps) {
-  const [recommendations, setRecommendations] = useState<{ [key: string]: string }>({});
+  const [recommendations, setRecommendations] = useState<{ [key: string]: { title: string, description: string }[] }>({});
 
   useEffect(() => {
     const lowScoreSkills = data.filter(([_, score]) => score <= 3).map(([skill, _]) => skill);
