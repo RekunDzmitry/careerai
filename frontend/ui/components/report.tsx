@@ -1,4 +1,5 @@
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
+import { useEffect, useState } from "react";
 
 type SkillEvaluation = [string, number];
 
@@ -7,6 +8,24 @@ interface ReportProps {
 }
 
 export function Report({ data }: ReportProps) {
+  const [recommendations, setRecommendations] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    const lowScoreSkills = data.filter(([_, score]) => score <= 3).map(([skill, _]) => skill);
+
+    if (lowScoreSkills.length > 0) {
+      fetch('http://localhost:3003/recommend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ skills: lowScoreSkills }),
+      })
+        .then(response => response.json())
+        .then(data => setRecommendations(data))
+        .catch(error => console.error('Error fetching recommendations:', error));
+    }
+  }, [data]);
   return (
     <Card className="w-full max-w-3xl">
       <CardHeader className="pb-0">
@@ -54,11 +73,16 @@ export function Report({ data }: ReportProps) {
           <p className="text-sm leading-loose">
             To support the interviewee's professional development, the following roadmap for growth is recommended:
           </p>
-          <ul className="list-disc list-inside text-sm grid gap-2">
-            <li>Participate in leadership training programs.</li>
-            <li>Seek mentorship opportunities with experienced leaders.</li>
-            <li>Engage in collaborative projects to further enhance teamwork skills.</li>
-          </ul>
+          {Object.entries(recommendations).map(([skill, recommendation], index) => (
+            <div key={index} className="space-y-2">
+              <h3 className="font-semibold">{skill}</h3>
+              <ul className="list-disc list-inside text-sm grid gap-2">
+                {recommendation.split('\n').map((rec, i) => (
+                  <li key={i}>{rec}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>
