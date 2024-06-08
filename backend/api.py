@@ -54,3 +54,14 @@ async def get_interview(interviewId: str = Query(..., description="The interview
     output = interview_helper.generate_report(interviewId)
     print("output", output)
     return output
+
+@app.post("/recommend")
+async def recommend(skills: list = Body(..., embed=True)):
+    print("skills", skills)
+    interview_helper = ai.InterviewAI()
+    result = {}
+    for skill in skills:
+        output = interview_helper.generate_recomendation(skill)
+        result[skill] = output
+    print("result", result)
+    return result
