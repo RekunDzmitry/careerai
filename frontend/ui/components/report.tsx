@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 
 type SkillEvaluation = [string, number];
 
+interface ReportData {
+  skills: string[];
+}
+
 interface ReportProps {
   data: SkillEvaluation[];
 }
