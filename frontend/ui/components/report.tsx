@@ -91,6 +91,6 @@ export function Report({ data }: ReportProps) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
