@@ -3,10 +3,47 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
+import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function Component() {
   const [showImage, setShowImage] = useState(false);
   const [showText, setShowText] = useState(false);
+
+  const router = useRouter();
+  const [jobDescription, setJobDescription] = useState("");
+  
+  const handleStart = () => {
+    const jobDescriptionValue = document.getElementById(
+      "jobDescription"
+    ) as HTMLTextAreaElement;
+
+    if (jobDescriptionValue) {
+      const description = jobDescriptionValue.value;
+      setJobDescription(description);
+
+      axios
+        .post(
+          `http://localhost:3003/interview`,
+          { jobDescription: description },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Skills output:", response.data);
+          const interviewId = response.data;
+          console.log("interviewId:", interviewId);
+          router.push(`/interview/${interviewId}`);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the Axios request:", error);
+        });
+    }
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -51,7 +88,7 @@ export default function Component() {
           </Link>
         </div>
       </header>
-      <div className="flex-1 flex flex-col items-center justify-center py-6" style={{ backgroundImage: `url('/interview.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', position: 'relative', height: '100vh' }}>
+      <div className="flex-1 flex flex-col items-center justify-center py-6" style={{ backgroundImage: `url('/interview.jpg')`, backgroundSize: '100% 100%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', position: 'relative', minHeight: '50vh' }}>
       <div className="absolute inset-0 bg-black opacity-60"></div>
     <div className="container flex flex-col items-center justify-center space-y-4 text-center" style={{ position: 'relative', width: '100%', height: '100%' }}>
         {showText && (
@@ -71,18 +108,21 @@ export default function Component() {
     </div>
 </div>
       
-      <main>
-        <div>
-        <p className="max-w-[600px] text-black-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-black-400">
-                  lorem ipsum
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-
-                </p>
-        </div>
-      </main>
+      <div className="flex items-center justify-center py-6">
+      <div className="border-2 border-dashed rounded p-4 mb-4">
+            <textarea
+              id="jobDescription"
+              className="w-full h-full border-gray-300 rounded mt-2 p-2 resize-none"
+              placeholder="Paste the job description here"
+            ></textarea>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-8"
+              onClick={handleStart}
+            >
+              Start interview
+            </button>
+          </div>
+      </div>
 
       <footer className="grid gap-4 p-4 border-t border-gray-200 items-center justify-center sm:p-6 md:grid-cols-2 lg:grid-cols-4 dark:border-gray-800">
         <div className="space-y-2">
