@@ -21,7 +21,7 @@ load_dotenv()
 
 class InterviewAI:
     def __init__(self):
-        self.model = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
+        self.model = ChatOpenAI(temperature=0, model_name="gpt-4o-mini")
 
         self.conn = psycopg2.connect(
             host="postgres",

@@ -98,7 +98,8 @@ export function Interview({ interviewId, questions }: InterviewProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-screen">
+    <div className="h-screen flex justify-center items-center">
+    <div className="w-full max-w-3xl grid grid-cols-1 gap-6">
       <div className="col-span-1 md:col-span-2 flex flex-col">
         <div className="mb-4">
           <Card>
@@ -156,6 +157,7 @@ export function Interview({ interviewId, questions }: InterviewProps) {
           <div>No more questions to answer. Redirecting...</div>
         )}
       </div>
+    </div>
     </div>
   );
 }

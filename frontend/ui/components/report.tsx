@@ -13,6 +13,7 @@ interface ReportProps {
 
 export function Report({ data }: ReportProps) {
   const [recommendations, setRecommendations] = useState<{ [key: string]: { title: string, description: string }[] }>({});
+  const averageMark = data.reduce((sum, item) => sum + item[1], 0) / data.length;
 
   useEffect(() => {
     const lowScoreSkills = data.filter(([_, score]) => score <= 3).map(([skill, _]) => skill);
@@ -32,7 +33,8 @@ export function Report({ data }: ReportProps) {
   }, [data]);
 
   return (
-    <Card className="w-full max-w-3xl">
+    <div className="h-screen flex justify-center items-center">
+    <Card className="w-full max-w-3xl max-h-full overflow-y-auto">
       <CardHeader className="pb-0">
         <CardTitle>Skills Evaluation</CardTitle>
         <CardDescription>A report on the interviewee's skills evaluation.</CardDescription>
@@ -59,20 +61,12 @@ export function Report({ data }: ReportProps) {
       </CardContent>
       <CardContent className="p-6 space-y-4">
         <div className="space-y-2">
-          <h3 className="font-semibold">Strengths</h3>
-          <p className="text-sm leading-loose italic">
-            The interviewee excelled in communication, problem solving, and teamwork, demonstrating strong collaborative
-            skills and the ability to articulate ideas effectively.
-          </p>
+          <h3 className="font-semibold">Average mark</h3>
+          <p className="text-sm leading-loose">
+            Your average mark is {averageMark.toFixed(1)} from 10.
+          </p> 
         </div>
-        <div className="space-y-2">
-          <h3 className="font-semibold">Weaknesses</h3>
-          <p className="text-sm leading-loose italic">
-            While the interviewee's performance was generally positive, there are areas that require further
-            development. Notably, the interviewee's leadership skills were assessed as average, indicating room for
-            growth in this area.
-          </p>
-        </div>
+       
         <div className="space-y-2">
           <h3 className="font-semibold">Roadmap for Growth</h3>
           <p className="text-sm leading-loose">
@@ -93,6 +87,7 @@ export function Report({ data }: ReportProps) {
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 }
 
