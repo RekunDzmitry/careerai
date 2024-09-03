@@ -41,6 +41,7 @@ export default function Component() {
         })
         .catch((error) => {
           console.error("There was a problem with the Axios request:", error);
+          router.push("/error");
         });
     }
   };
@@ -124,32 +125,39 @@ export default function Component() {
           </div>
       </div>
 
-      <footer className="grid gap-4 p-4 border-t border-gray-200 items-center justify-center sm:p-6 md:grid-cols-2 lg:grid-cols-4 dark:border-gray-800">
-        <div className="space-y-2">
-          <Link className="font-bold text-gray-900 dark:text-gray-50" href="#">
-            Terms and Conditions
-          </Link>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Read our terms and conditions
-          </p>
-        </div>
-        <div className="space-y-2">
-          <Link className="font-bold text-gray-900 dark:text-gray-50" href="#">
-            FAQ
-          </Link>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Have any questions? Find answers here
-          </p>
-        </div>
-        <div className="space-y-2">
-          <Link className="font-bold text-gray-900 dark:text-gray-50" href="#">
-            Privacy Policy
-          </Link>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Review our privacy policy
-          </p>
-        </div>
-      </footer>
+      <footer className="p-4 border-t border-gray-200 dark:border-gray-800">
+  <div className="container mx-auto flex justify-center">
+    <div className="flex space-x-8">
+      <div className="flex flex-col items-center space-y-2">
+        <a
+          className="font-bold text-gray-900 dark:text-gray-50"
+          href="/Terms and Conditions.txt"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Terms and Conditions
+        </a>
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+          Read our terms and conditions
+        </p>
+      </div>
+      
+      <div className="flex flex-col items-center space-y-2">
+        <a
+          className="font-bold text-gray-900 dark:text-gray-50"
+          href="/Privacy Policy.txt"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Privacy Policy
+        </a>
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+          Review our privacy policy
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
     </div>
   );
 }
