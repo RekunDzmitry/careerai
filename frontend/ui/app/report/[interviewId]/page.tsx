@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { Report } from "@/components/report";
+import { useRouter } from "next/navigation";
 
 interface ReportProps {
   params: {
@@ -11,6 +12,9 @@ interface ReportProps {
 }
 
 export default function Page({ params }: ReportProps ) {
+  
+  const router = useRouter();
+  
   const fetchReport = async (interviewId: string) => {
     try {
       const response = await axios.get(`http://localhost:3003/report`, {
@@ -24,6 +28,7 @@ export default function Page({ params }: ReportProps ) {
 
     } catch (error) {
       console.error('Axios request failed:', error.message);
+      router.push("/error");
     }
   }
 
@@ -36,6 +41,7 @@ export default function Page({ params }: ReportProps ) {
         setReport(fetchedReport);
       } catch (error) {
         console.error('Error fetching interview data:', error.message);
+        router.push("/error");
       }
     })();
   }, [params.interviewId]);
