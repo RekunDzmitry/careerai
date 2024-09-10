@@ -3,7 +3,6 @@
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import { Report } from "@/components/report";
-import FadeLoader from "react-spinners/FadeLoader";
 
 interface ReportProps {
   params: {
