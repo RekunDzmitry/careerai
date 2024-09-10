@@ -29,7 +29,6 @@ export default function Page({ params }: ReportProps ) {
   }
 
   const [report, setReport] = useState<ReportData[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -38,21 +37,13 @@ export default function Page({ params }: ReportProps ) {
         setReport(fetchedReport);
       } catch (error) {
         console.error('Error fetching interview data:', error.message);
-      } finally {
-        setLoading(false);
       }
     })();
   }, [params.interviewId]);
 
   return (
     <div>
-      {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <FadeLoader color="#123abc" loading={loading} />
-        </div>
-      ) : (
-        <Report data={report} />
-      )}
+      <Report data={report} />
     </div>
   );
 }
