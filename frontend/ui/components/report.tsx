@@ -21,7 +21,6 @@ export function Report({ data }: ReportProps) {
     const lowScoreSkills = data.filter(([_, score]) => score <= 3).map(([skill, _]) => skill);
 
     if (lowScoreSkills.length > 0) {
-      console.log('Fetching recommendations for:', lowScoreSkills);
       fetch('http://localhost:3003/recommend', {
         method: 'POST',
         headers: {
