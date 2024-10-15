@@ -153,13 +153,13 @@ class InterviewAI:
         self.conn.commit()
         cur.close()
 
-    def save_questions_to_db(self, interview_id, questions):
+    def save_questions_to_db(self, interview_id, questions, user_id):
         cur = self.conn.cursor()
         for skill, questions in questions.items():
             for question in questions:
                 cur.execute("""
-                    INSERT INTO public.InterviewQuestions (interview_id, skill, question) 
-                    VALUES (%s, %s, %s)""", (interview_id, skill, question)
+                    INSERT INTO public.InterviewQuestions (interview_id, skill, question, user_id) 
+                    VALUES (%s, %s, %s, %s)""", (interview_id, skill, question, user_id)
                 )
         self.conn.commit()
         cur.close()
@@ -291,6 +291,16 @@ class InterviewAI:
             print("generated questions",questions)
             final_questions[skill].extend(questions)
         print("final_questions",final_questions)
-        self.save_questions_to_db(interview_id, final_questions)
+        self.save_questions_to_db(interview_id, final_questions, user_id)
         return interview_id
 
+    def check_interview_limit(self, user_id):
+        cur = self.conn.cursor()
+        cur.execute("""
+            SELECT COUNT(*) 
+            FROM public.interview_attempts 
+            WHERE user_id = %s AND start_dt >= CURRENT_DATE
+        """, (user_id,))
+        count = cur.fetchone()[0]
+        cur.close()
+        return count < 3
