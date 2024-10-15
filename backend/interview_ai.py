@@ -292,7 +292,17 @@ class InterviewAI:
             final_questions[skill].extend(questions)
         print("final_questions",final_questions)
         self.save_questions_to_db(interview_id, final_questions)
+        self.save_interview_attempt(interview_id, user_id)
         return interview_id
+
+    def save_interview_attempt(self, interview_id, user_id):
+        cur = self.conn.cursor()
+        cur.execute("""
+            INSERT INTO public.interview_attempts (interview_id, user_id, start_dt) 
+            VALUES (%s, %s, NOW())
+        """, (interview_id, user_id))
+        self.conn.commit()
+        cur.close()
 
     def check_interview_limit(self, user_id):
         cur = self.conn.cursor()
