@@ -273,6 +273,8 @@ class InterviewAI:
     
     def run(self, input_str, user_id):
         print("user_id", user_id)
+        if not self.check_interview_limit(user_id):
+            raise Exception("User has reached the maximum number of interviews for today.")
         final_questions = defaultdict(list)
         interview_id = self.hash_request(input_str)
         cached_data = self.check_interview_id(interview_id)
