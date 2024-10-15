@@ -2,24 +2,27 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 export default function Home() {
   const router = useRouter();
   const [jobDescription, setJobDescription] = useState("");
   
+  const { userId } = useAuth();
+
   const handleStart = () => {
     const jobDescriptionValue = document.getElementById(
       "jobDescription"
     ) as HTMLTextAreaElement;
 
-    if (jobDescriptionValue) {
+    if (jobDescriptionValue && userId) {
       const description = jobDescriptionValue.value;
       setJobDescription(description);
 
       axios
         .post(
           `http://localhost:3003/interview`,
-          { jobDescription: description },
+          { jobDescription: description, userId },
           {
             headers: {
               "Content-Type": "application/json",
