@@ -153,13 +153,13 @@ class InterviewAI:
         self.conn.commit()
         cur.close()
 
-    def save_questions_to_db(self, interview_id, questions):
+    def save_questions_to_db(self, interview_id, questions, user_id):
         cur = self.conn.cursor()
         for skill, questions in questions.items():
             for question in questions:
                 cur.execute("""
-                    INSERT INTO public.InterviewQuestions (interview_id, skill, question) 
-                    VALUES (%s, %s, %s)""", (interview_id, skill, question)
+                    INSERT INTO public.InterviewQuestions (interview_id, skill, question, user_id) 
+                    VALUES (%s, %s, %s, %s)""", (interview_id, skill, question, user_id)
                 )
         self.conn.commit()
         cur.close()
@@ -271,7 +271,7 @@ class InterviewAI:
         parsed_output = self._parse_json(output.content, "recomendations")
         return parsed_output
     
-    def run(self, input_str):
+    def run(self, input_str, user_id):
         final_questions = defaultdict(list)
         interview_id = self.hash_request(input_str)
         cached_data = self.check_interview_id(interview_id)
@@ -288,6 +288,6 @@ class InterviewAI:
             print("generated questions",questions)
             final_questions[skill].extend(questions)
         print("final_questions",final_questions)
-        self.save_questions_to_db(interview_id, final_questions)
+        self.save_questions_to_db(interview_id, final_questions, user_id)
         return interview_id
 
