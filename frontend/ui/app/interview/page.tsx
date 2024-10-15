@@ -22,7 +22,7 @@ export default function Home() {
       axios
         .post(
           `http://localhost:3003/interview`,
-          { jobDescription: description, userId },
+          { jobDescription: description, userId: userId },
           {
             headers: {
               "Content-Type": "application/json",

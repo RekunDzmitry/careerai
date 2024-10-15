@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:16
 
 # Any additional configurations or setup can be added here
 ENV POSTGRES_HOST=postgres
