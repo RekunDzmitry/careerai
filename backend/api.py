@@ -25,9 +25,9 @@ async def read_root():
     return {"message": "Hello World"}
 
 @app.post("/interview")
-async def start_interview(jobDescription: str = Body(..., embed=True)):
+async def start_interview(jobDescription: str = Body(..., embed=True), userId: str = Body(..., embed=True)):
     interview_helper = ai.InterviewAI()
-    output = interview_helper.run(jobDescription)
+    output = interview_helper.run(jobDescription, userId)
     return output
 
 @app.get("/interview")
