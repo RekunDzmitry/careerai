@@ -6,6 +6,7 @@ import Link from "next/link";
 import axios from "axios";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 export default function Component() {
   const [showImage, setShowImage] = useState(false);
@@ -13,20 +14,23 @@ export default function Component() {
 
   const router = useRouter();
   const [jobDescription, setJobDescription] = useState("");
-  
+  const { userId } = useAuth();
+  console.log ("User ID: ",userId)
+
+
   const handleStart = () => {
     const jobDescriptionValue = document.getElementById(
       "jobDescription"
     ) as HTMLTextAreaElement;
 
-    if (jobDescriptionValue) {
+    if (jobDescriptionValue && userId) {
       const description = jobDescriptionValue.value;
       setJobDescription(description);
 
       axios
         .post(
           `http://localhost:3003/interview`,
-          { jobDescription: description },
+          { jobDescription: description, userId: userId },
           {
             headers: {
               "Content-Type": "application/json",
@@ -109,21 +113,7 @@ export default function Component() {
     </div>
 </div>
       
-      <div className="flex items-center justify-center py-6">
-      <div className="border-2 border-dashed rounded p-4 mb-4">
-            <textarea
-              id="jobDescription"
-              className="w-full h-full border-gray-300 rounded mt-2 p-2 resize-none"
-              placeholder="Paste the job description here"
-            ></textarea>
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-8"
-              onClick={handleStart}
-            >
-              Start interview
-            </button>
-          </div>
-      </div>
+      
 
       <footer className="p-4 border-t border-gray-200 dark:border-gray-800">
   <div className="container mx-auto flex justify-center">

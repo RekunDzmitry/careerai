@@ -9,6 +9,7 @@ export default function Home() {
   const [jobDescription, setJobDescription] = useState("");
   
   const { userId } = useAuth();
+  console.log ("User ID: ",userId)
 
   const handleStart = () => {
     const jobDescriptionValue = document.getElementById(
