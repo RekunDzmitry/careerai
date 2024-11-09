@@ -114,6 +114,59 @@ export default function Component() {
 </div>
       
       
+<div className="container mx-auto my-10 px-4">
+    <h2 className="text-2xl font-bold text-center mb-8">
+      Frequently Asked Questions
+    </h2>
+    <div className="faq max-w-3xl mx-auto">
+      <details>
+        <summary>What is this platform about?</summary>
+        <p>
+          Our platform provides AI-powered interview preparation to help you ace
+          your job interviews.
+        </p>
+      </details>
+
+      <details>
+        <summary>How can I sign up?</summary>
+        <p>
+          You can sign up by clicking the 'Sign Up' button at the top of the
+          page and following the registration steps.
+        </p>
+      </details>
+
+      <details>
+        <summary>Can I use it fir free?</summary>
+        <p>
+          Yes, you can use it for free for 3 times a day.
+        </p>
+      </details>
+    </div>
+  </div>
+
+  {/* Стили для FAQ */}
+  <style jsx>{`
+    .faq {
+      margin-bottom: 40px;
+    }
+    details {
+      background-color: #f7f7f7;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    summary {
+      font-weight: bold;
+      outline: none;
+    }
+    details p {
+      padding-top: 10px;
+      margin: 0;
+      color: #333;
+    }
+  `}</style>
 
       <footer className="p-4 border-t border-gray-200 dark:border-gray-800">
   <div className="container mx-auto flex justify-center">
