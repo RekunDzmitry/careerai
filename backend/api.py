@@ -33,9 +33,12 @@ async def start_interview(jobDescription: str = Body(..., embed=True), userId: s
 @app.get("/interview")
 async def get_interview(interviewId: str = Query(..., description="The interview ID")):
     interview_helper = ai.InterviewAI()
-    output = interview_helper.check_interview_id(interviewId)
-    print("output", output)
-    return output
+    try:
+        output = interview_helper.check_interview_id(interviewId)
+        print("output", output)
+        return output
+    except:
+        return {"response": "ERROR"}
 
 @app.post("/calculate")
 async def calculate_score(data: dict = Body(...)):
