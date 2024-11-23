@@ -136,7 +136,7 @@ export default function Component() {
       </details>
 
       <details>
-        <summary>Can I use it fir free?</summary>
+        <summary>Can I use it for free?</summary>
         <p>
           Yes, you can use it for free for 3 times a day.
         </p>

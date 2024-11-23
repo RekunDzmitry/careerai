@@ -38,6 +38,7 @@ export default function Home() {
         })
         .catch((error) => {
           console.error("There was a problem with the Axios request:", error);
+          router.push("error_limit_interviews/");
         });
     }
   };
