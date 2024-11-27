@@ -50,6 +50,14 @@ export default function Component() {
     }
   };
 
+  const handleButtonClick = () => {
+    if (userId) {
+      router.push("/interview"); // Если залогинен, переходим на страницу интервью
+    } else {
+      router.push("/sign-in"); // Если не залогинен, переходим на страницу входа
+    }
+  };
+
   useEffect(() => {
     setTimeout(() => {
       setShowImage(true);
@@ -112,7 +120,20 @@ export default function Component() {
         )}
     </div>
 </div>
-      
+
+<div className="flex flex-col items-center my-8 space-y-4">
+  <p className="text-left text-gray-700 dark:text-gray-300 text-lg max-w-2xl">
+  1. After transitioning, you can paste the job description. <br></br>
+  2. Next, the interview process will begin. <br></br>
+  3. Finally, you will receive a detailed review of the interview from our AI. <br></br>
+  </p>
+  <button
+    onClick={handleButtonClick}
+    className="px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-semibold rounded-full shadow-lg hover:from-blue-600 hover:to-indigo-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-indigo-800 transition-all"
+  >
+    Start interview
+  </button>
+</div>
       
 <div className="container mx-auto my-10 px-4">
     <h2 className="text-2xl font-bold text-center mb-8">

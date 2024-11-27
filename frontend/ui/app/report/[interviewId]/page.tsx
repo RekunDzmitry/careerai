@@ -47,8 +47,24 @@ export default function Page({ params }: ReportProps ) {
   }, [params.interviewId]);
 
   return (
-    <div>
-      <Report data={report} />
+    <div className="relative min-h-screen">
+    {/* Навигационные кнопки */}
+    <div className="absolute top-4 right-4 flex space-x-4">
+      <button 
+        onClick={() => router.push('/')}
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+      >
+        Main Page
+      </button>
+      <button 
+        onClick={() => router.push('/interview')}
+        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+      >
+        Start Interview
+      </button>
     </div>
-  );
+
+    <Report data={report} />
+  </div>
+);
 }
